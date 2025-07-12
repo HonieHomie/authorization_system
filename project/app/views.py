@@ -20,5 +20,7 @@ def login(request):
         if User.objects.filter(username=nickname, password=passcode):
             return HttpResponse("Login applied")
         else:
-            return HttpResponse("Error")
+            return HttpResponse("Error,")
     return render(request, "login.html")
+
+#end of code hahhahahaha
