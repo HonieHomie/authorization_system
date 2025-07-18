@@ -8,7 +8,7 @@ def register(request):
         password = request.POST.get("password")
         login = request.POST.get("login")
         if login and password:
-            User.objects.create(username=login, password=password)
+            User.objects.create(username=login, password=password, is_logged=True)
             return redirect("app/")
 
     return render(request, "register.html")
@@ -18,6 +18,7 @@ def login(request):
         nickname = request.POST.get("nickname")
         passcode = request.POST.get("passcode")
         if User.objects.filter(username=nickname, password=passcode):
+            User.objects.create(is_logged=True)
             return HttpResponse("Login applied")
         else:
             return HttpResponse("Error,")
