@@ -17,11 +17,19 @@ def login(request):
     if request.method == "POST":
         nickname = request.POST.get("nickname")
         passcode = request.POST.get("passcode")
-        if User.objects.filter(username=nickname, password=passcode):
-            User.objects.create(is_logged=True)
-            return HttpResponse("Login applied")
+        user_qs = User.objects.filter(username=nickname, password=passcode)
+        if user_qs.exists():
+            user = user_qs.first()
+            user.is_logged = True
+            user.save()
+            return render(request, "userpage.html", {"user": user})
         else:
-            return HttpResponse("Error,")
+            return render(request, "login.html", {"error": "Invalid credentials"})
     return render(request, "login.html")
+
+def userpage(request):
+    # Try to get a logged-in user, fallback to None
+    user = User.objects.filter(is_logged=True).first()
+    return render(request, "userpage.html", {"user": user})
 
 #end of code hahhahahaha
